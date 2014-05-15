@@ -115,10 +115,24 @@ void CallBackFunc2(int event, int x, int y)
 
 int main(int argc, char** argv) {
 	if(argc<2){
-		printf("Usage: <name> <image_file> <optional:= kernel_size>\n");
+		printf("Usage: <image_file> <optional:= kernel_size>\n");
 		return -1;
 	}
+<<<<<<< HEAD
 	commonFile.open("Samples2",std::fstream::app);
+=======
+	int flag;
+	char str[256]; 
+	std::cout<<"Enter 1 to create new file\n"
+			 <<"Enter 2 to append existing file\n";
+	std::cin>>flag;
+	std::cout<<"Enter file name: <name_k_kernel_size>\n";
+	std::cin>>str;
+	if(flag==1)
+		commonFile.open(str,std::fstream::out);
+	else if(flag==2)
+		commonFile.open(str,std::fstream::app);
+>>>>>>> 98ea56cdb3132568483a51114faa384a710ea327
 	img=cv::imread(argv[1]);
 	binary = cv::imread("/home/udai/fuerte_workspace/sandbox/freezing-batman/environment/interpretation/lane_detector_test/lanebinary.jpg");
 	
