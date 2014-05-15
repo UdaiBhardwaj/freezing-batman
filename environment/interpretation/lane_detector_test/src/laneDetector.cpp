@@ -41,7 +41,7 @@ void LaneDetector::interpret(){
 		cv::imshow("Preprocessing Output",result);
 	}
 	*/
-
+	cv::imwrite("original.jpg",result);
 	if( timeFunctions ){
 		gettimeofday (&tvalBefore, NULL);
 	}
@@ -58,7 +58,7 @@ void LaneDetector::interpret(){
 		cv::namedWindow("GrassRemoval Output");
 		cv::imshow("GrassRemoval Output",result);
 	}
-
+cv::imwrite("grassremoval.jpg",result);
 	if( timeFunctions ){
 		gettimeofday (&tvalBefore, NULL);
 	}
@@ -75,7 +75,7 @@ void LaneDetector::interpret(){
 		cv::namedWindow("ObstacleRemoval Output");
 		cv::imshow("ObstacleRemoval Output",result);
 	}
-
+cv::imwrite("obstacleremoval.jpg",result);
 	if( timeFunctions ){
 		gettimeofday (&tvalBefore, NULL);
 	}
@@ -92,6 +92,7 @@ void LaneDetector::interpret(){
 		cv::namedWindow("GetLaneBinary Output");
 		cv::imshow("GetLaneBinary Output",result);
 	}
+	cv::imwrite("lanebinary.jpg",result);
 	/*
 	if( timeFunctions ){
 		gettimeofday (&tvalBefore, NULL);
