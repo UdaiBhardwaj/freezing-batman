@@ -10,7 +10,7 @@ int iterations, strategy;
 
 void followWaypoints(navigation::State bot_location, navigation::State current_target){
 	
-	geometry_msgs::Pose target_pose;
+	geometry_msgs::Pose2D target_pose;
 	target_pose.position.x = current_target.x();
 	target_pose.position.y = current_target.y();
 	target_pose.position.z = current_target.theta();
@@ -19,7 +19,7 @@ void followWaypoints(navigation::State bot_location, navigation::State current_t
 
 	bot_location = navigation_space::TrackWaypointStrategy::getBotLocation();
 
-	geometry_msgs::Pose bot_pose;
+	geometry_msgs::Pose2D bot_pose;
 	bot_pose.position.x = bot_location.x();
 	bot_pose.position.y = bot_location.y();
 	bot_pose.position.z = bot_location.theta();
@@ -62,16 +62,17 @@ void pose_update(const eklavya_imu_sparkfun::RazorImu::ConstPtr message){
 
 				current_target = navigation_space::FollowNoseStrategy::getTargetLocation(heading);
 				
-				geometry_msgs::Pose target_pose;
+				geometry_msgs::Pose2D target_pose;
 				target_pose.position.x = current_target.x();
 				target_pose.position.y = current_target.y();
 				target_pose.position.z = current_target.theta();
 
 				pub_target_pose.publish(target_pose);
+				//std::cout<<"current target is (x)"<<target_pose.position.x;
 
 				bot_location = navigation_space::FollowNoseStrategy::getBotLocation();
 
-				geometry_msgs::Pose bot_pose;
+				geometry_msgs::Pose2D bot_pose;
 				bot_pose.position.x = bot_location.x();
 				bot_pose.position.y = bot_location.y();
 				bot_pose.position.z = bot_location.theta();
@@ -157,7 +158,7 @@ int main(int argc, char* argv[]){
 	if (argc<2)
 	{
 		std::cout<<"Usage:Navigator <Number corresponding to strategy>"<<std::endl;
-		std::cout<<"FollowNose = 0,\nTrackWaypoint = 1,\nHectorSLAM = 2,\nLaserTestOnly = 3,\nPlannerTestOnly = 4,\nFusionTestOnly = 5,\nIGVCBasic = 6,\nLaneFollowingOnly = 7,\nswitch_lane_GPS = 8,"<<std::endl;
+		std::cout<<"FollowNose = 0,\nTrackWaypoint = 1,\nHectorSLAM = 2,\nLaserTestOnly = 3,\nPlannerTestOnly = 4,\nFusionTestOnly = 5,\nIGVCBasic = 6,\nLaneFollowingOnly = 7,\nswitch_lane_GPS = 8,\nDummyNavigator = 9"<<std::endl;
 		return 1;
 	}
 
@@ -169,8 +170,8 @@ int main(int argc, char* argv[]){
 	ros::Subscriber sub_imu_sparkFun = nh.subscribe("imuRaw", 10, pose_update);
 	ros::Subscriber sub_pose_from_target = nh.subscribe("sensors/pose/",10, navigation_space::TrackWaypointStrategy::setTargetPose);
 
-	pub_target_pose = nh.advertise<geometry_msgs::Pose>("/target_pose",10);
-	pub_bot_pose = nh.advertise<geometry_msgs::Pose>("/bot_pose",10);
+	pub_target_pose = nh.advertise<geometry_msgs::Pose2D>("nose_navigator/target_pose",10);
+	pub_bot_pose = nh.advertise<geometry_msgs::Pose2D>("nose_navigator/bot_pose",10);
 	
 	ros::Rate loop_rate(LOOP_RATE);
 
